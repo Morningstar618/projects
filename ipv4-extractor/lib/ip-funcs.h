@@ -2,34 +2,36 @@
 #include<stdlib.h>
 #include<string.h>
 
-char *append_char(char *str, char ch) {
-	size_t len;
-	len = strlen(str);
+/* Global Vars */
+char *ip = "\0";
 
-	char *newStr = (char *)malloc((len + 1));
-	if (newStr == NULL) {
+void append_char(char *str, char ch) {
+	size_t len;
+	len = sizeof(*str);
+
+	char *temp = str;
+
+	printf("%d--\n", len);
+
+
+	ip = (char *)malloc(4);
+	if (ip == NULL) {
 		fprintf(stderr, "Failed to allocate memory to new string");
 		exit(3);
 	}
 
-	strcpy(newStr, str);
+	ip = temp;
 
-	if (len == 0) {
-		newStr[len] == ch;
-		newStr[len+1] == '\0';
-	} else {
-		newStr[len - 1] = ch;
-		newStr[len] = '\0';
-	}
+	//ip[len - 1] = 'h';
+	//ip[len] = '\0';
 
-	return newStr;
+	printf("%d\n", sizeof(*ip) * (strlen(ip)));
 
 }
 
 void parse_ipv4 (char *input_file) {
 	FILE *fptr;
 	char ch;
-	char *ip = "";
 
 	fptr = fopen(input_file, "r");
 	if (fptr == NULL) {
@@ -39,12 +41,9 @@ void parse_ipv4 (char *input_file) {
 
 	while((ch = fgetc(fptr)) != EOF) {
 		if (ch >=48 && ch <= 57 || ch == 46) {
-			ip = append_char(ip, ch);
-			printf("%s", ip);
+			append_char("Hii", ch);
 		}
 	}
 
-	free(ip);
-
-	fclose(fptr);
+	printf("%s", ip);
 }
