@@ -39,6 +39,11 @@ void is_ipv4(char *ip)
 			{
 				valid_octet++;
 			}
+
+			/* Resetting ip_buffer */
+			ip_buffer[0] = '\0';
+			ip_buffer[1] = '\0';
+			ip_buffer[2] = '\0';
 		}
 	}
 
