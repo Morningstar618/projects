@@ -1,4 +1,4 @@
 .env
 myvenv
-__pycache__
 Dockerfile
+.gitignore
