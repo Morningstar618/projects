@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>     //close
-#include <sys/socket.h> //connect, socket
-#include <arpa/inet.h>  //htons
-#include <netinet/in.h> //inet_addr
+#include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <dlfcn.h>
 
 #define PROXY "127.0.0.1"
 #define PROXY_PORT 9050
@@ -36,5 +37,5 @@ struct proxy_response
 };
 typedef struct proxy_response Res;
 
-Req *request(const char *, const int);
-int main(int, char **);
+Req *request(struct sockaddr_in *);
+int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
