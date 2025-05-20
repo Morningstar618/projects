@@ -11,5 +11,5 @@ pub enum BlockSearch {
 pub enum BlockSearchResult<'a> {
     Success(&'a Block),
     BlockNotFound,
-    BlockNonceNotFound
+    NoBlockInChain
 }

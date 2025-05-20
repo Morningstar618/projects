@@ -28,16 +28,16 @@ impl Block {
         self.nonce
     }
     
-    pub fn get_previous_hash(&self) -> Vec<u8> {
-        self.previous_hash.clone()
+    pub fn get_previous_hash(&self) -> &Vec<u8> {
+        &self.previous_hash
     }
 
     pub fn get_timestamp(&self) -> u128 {
         self.time_stamp
     }
 
-    pub fn get_transaction(&self) -> Vec<Vec<u8>> {
-        self.transaction.clone()
+    pub fn get_transaction(&self) -> &Vec<Vec<u8>> {
+        &self.transaction
     }
 
     pub fn hash(&self) -> Vec<u8> {

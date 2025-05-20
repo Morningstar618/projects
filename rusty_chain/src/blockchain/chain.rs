@@ -1,5 +1,8 @@
-use super::block::Block;
-use super::search::{BlockSearch, BlockSearchResult};
+use super::{
+    block::Block,
+    search::{BlockSearch, BlockSearchResult},
+    transaction::Transaction
+};
 
 #[derive(Debug)]
 pub struct BlockChain {
@@ -46,41 +49,45 @@ impl BlockChain {
 
     pub fn search_block(&self, search: BlockSearch) -> BlockSearchResult {
         for block in self.chain.iter() {
-            match &search {
+            match search {
                 BlockSearch::SearchByNonce(val) => {
-                    if *val >= self.chain.len() as i32 {
-                        return BlockSearchResult::BlockNonceNotFound;
+                    if val as usize >= self.chain.len() {
+                        return BlockSearchResult::BlockNotFound;
                     }
 
-                    if *val == block.get_nonce() {
+                    if val == block.get_nonce() {
                         return BlockSearchResult::Success(block);
                     }
                 }
 
-                BlockSearch::SearchByPreviousHash(hash) => {
-                    if *hash == block.get_previous_hash() {
+                BlockSearch::SearchByPreviousHash(ref hash) => {
+                    if hash == block.get_previous_hash() {
                         return BlockSearchResult::Success(block);
                     }
                 }
 
                 BlockSearch::SearchByTimestamp(ts) => {
-                    if *ts == block.get_timestamp() {
+                    if ts == block.get_timestamp() {
                         return BlockSearchResult::Success(block);
                     }
                 }
 
-                BlockSearch::SearchByTransaction(transaction) => {
-                    if *transaction == block.get_transaction() {
+                BlockSearch::SearchByTransaction(ref transaction) => {
+                    if transaction == block.get_transaction() {
                         return BlockSearchResult::Success(block);
                     }
                 }
 
-                BlockSearch::SearchByBlockHash(block_hash) => {
-                    if *block_hash == block.hash() {
+                BlockSearch::SearchByBlockHash(ref block_hash) => {
+                    if block_hash == &block.hash() {
                         return BlockSearchResult::Success(block);
                     }
                 }
             }
+        }
+
+        if self.chain.len() == 0 {
+            return BlockSearchResult::NoBlockInChain;
         }
 
         BlockSearchResult::BlockNotFound
