@@ -6,7 +6,7 @@ pub struct Block {
     nonce: i32,
     previous_hash: Vec<u8>,
     time_stamp: u128,
-    transaction: Vec<Vec<u8>>
+    pub transaction: Vec<Vec<u8>>
 }
 
 impl Block {

@@ -1,5 +1,6 @@
 use super::utility_traits::Serialization;
 
+#[derive(Debug)]
 pub struct Transaction {
     sender_address: Vec<u8>,
     recipient_address: Vec<u8>,
@@ -51,3 +52,4 @@ impl Serialization<Self> for Transaction {
         Transaction { sender_address, recipient_address, value }
     }
 }
+

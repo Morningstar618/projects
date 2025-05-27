@@ -1,7 +1,7 @@
 use super::{
     block::Block,
     search::{BlockSearch, BlockSearchResult},
-    transaction::Transaction
+    transaction::Transaction, utility_traits::Serialization
 };
 
 #[derive(Debug)]
@@ -29,7 +29,13 @@ impl BlockChain {
             vec![0 as u8; 32]
         };
 
-        let b = Block::new(nonce, previous_hash);
+        let mut b = Block::new(nonce, previous_hash);
+
+        for tx in self.transaction_pool.iter() {
+            b.transaction.push(tx.clone());
+        }
+
+        self.transaction_pool.clear();
         self.chain.push(b);
     }
 
@@ -93,4 +99,13 @@ impl BlockChain {
         BlockSearchResult::BlockNotFound
     }
 
+    pub fn add_transaction(&mut self, tx: &impl Serialization<Transaction>) {
+        for tx_in_pool in self.transaction_pool.iter() {
+            if *tx_in_pool == tx.serialization() {
+                return;
+            }
+        }
+
+        self.transaction_pool.push(tx.serialization());
+    }
 }
