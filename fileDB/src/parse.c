@@ -101,7 +101,7 @@ int validate_db_header(int fd, struct dbheader_t **headerOut) {
 	}
 
 	header->version = ntohs(header->version);
-	header->count - ntohs(header->count);
+	header->count = ntohs(header->count);
 	header->magic = ntohl(header->magic);
 	header->filesize = ntohl(header->filesize);
 

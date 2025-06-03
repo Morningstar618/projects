@@ -83,14 +83,15 @@ int main(int argc, char *argv[]) {
 			return STATUS_ERROR;
 		}
 	}
-	
+
+
 	if (read_employees(db_fd, db_header, &employees) != STATUS_SUCCESS) {
 		printf("\tUnable to read employee data from the database file\n");
 		free_p(db_header, employees);
 		close_fd(db_fd);
 		return STATUS_ERROR;
 	}
-	
+
 	if (addstring) {
 		db_header->count++;
 		
@@ -118,7 +119,6 @@ int add_employee(struct dbheader_t *dbheader, struct employee_t *employees, char
 
 	printf("[*] ADDED RECORD:\n\tname: %s\n\taddress: %s\n\thours: %s\n", name, address, hours);
 	
-	printf("version: %d\n", dbheader->count);
 	strncpy(employees[dbheader->count - 1].name, name, sizeof(employees[dbheader->count - 1].name));
 	strncpy(employees[dbheader->count - 1].address, address, sizeof(employees[dbheader->count - 1].address));
 	employees[dbheader->count - 1].hours = atoi(hours);
