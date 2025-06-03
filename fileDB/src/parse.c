@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <Winsock2.h>
+#include <arpa/inet.h>
 
 #include "common.h"
 #include "parse.h"

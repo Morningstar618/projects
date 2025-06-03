@@ -1,7 +1,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <Winsock2.h>
+#include <arpa/inet.h>
 
 #include "file.h"
 #include "common.h"

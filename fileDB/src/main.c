@@ -93,7 +93,14 @@ int main(int argc, char *argv[]) {
 	
 	if (addstring) {
 		db_header->count++;
-		realloc(employees, db_header->count * sizeof(struct employee_t));
+		
+		if (realloc(employees, db_header->count * sizeof(struct employee_t)) == NULL) {
+			perror("realloc");
+			free_p(db_header, employees);
+			close_fd(db_fd);
+			return STATUS_ERROR;
+		}
+
 		add_employee(db_header, employees, addstring);
 	}
 
