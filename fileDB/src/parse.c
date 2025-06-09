@@ -7,6 +7,22 @@
 #include "common.h"
 #include "parse.h"
 
+int list_employees(struct dbheader_t *dbheader, struct employee_t *employees) {
+	if (!dbheader->count) {
+		printf("[*] No employees found in the database\n");
+		return STATUS_SUCCESS;
+	}
+	
+	for (int i = 0; i < dbheader->count; i++) {
+		printf("Employee %d\n", i + 1);
+		printf("\tName: %s\n", employees[i].name);
+		printf("\tAddress: %s\n", employees[i].address);
+		printf("\tHours: %d\n", employees[i].hours);	
+	}
+	
+	return STATUS_SUCCESS;
+}
+
 int read_employees(int fd, struct dbheader_t *dbheader, struct employee_t **employeesOut) {
 	if (fd < 0) {
 		printf("\n[!] Bad FD - read_employees/parse.c\n");
@@ -46,7 +62,7 @@ int output_file(int fd, struct dbheader_t *dbheader, struct employee_t *employee
 	dbheader->count = htons(dbheader->count);
 	dbheader->magic = htonl(dbheader->magic);
 	dbheader->filesize = htonl(sizeof(struct dbheader_t) + sizeof(struct employee_t) * count);
-	
+
 	lseek(fd, 0, SEEK_SET); // Reseting FD's offset that was changed during db file read before writing data back to the fd
 	
 	if (write(fd, dbheader, sizeof(struct dbheader_t)) == STATUS_ERROR) {
@@ -54,6 +70,8 @@ int output_file(int fd, struct dbheader_t *dbheader, struct employee_t *employee
 		return STATUS_ERROR;
 	}
 	
+	if (!employees) return STATUS_SUCCESS;
+
 	for (int i=0; i<count; i++) {
 		employees[i].hours = htonl(employees[i].hours);
 		if (write(fd, &employees[i], sizeof(struct employee_t)) == STATUS_ERROR) {

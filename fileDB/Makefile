@@ -1,4 +1,4 @@
-TARGET = bin/fileDB
+TARGET = fileDB
 SRC = $(wildcard src/*.c)
 OBJ = $(patsubst src/%.c, obj/%.o, $(SRC))
 
@@ -10,7 +10,7 @@ default: $(TARGET)
 
 clean:
 	rm -rf obj/*.o
-	rm -rf bin/*
+	rm -rf $(TARGET)
 	rm -rf *.db
 
 $(TARGET): $(OBJ)
