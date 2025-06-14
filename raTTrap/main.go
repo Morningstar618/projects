@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	scanner.ScanConnections()
+	scanner.DisplayConnections()
 }

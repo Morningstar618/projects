@@ -3,29 +3,55 @@ package scanner
 import (
 	"fmt"
 	"net"
+	"os"
+	"os/signal"
 	"rattrap/lib/printer"
+	"runtime"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/shirou/gopsutil/process"
 	pnet "github.com/shirou/gopsutil/v3/net"
 )
 
-func ScanConnections() {
-	green := printer.PrintGreen()
-	red := printer.PrintRed()
+const refreshInterval = 2 * time.Second
+
+func DisplayConnections() {
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt)
+
+	ticker := time.NewTicker(refreshInterval)
+	defer ticker.Stop()
+
+	getConnections()
+
+	for {
+		select {
+		case <-ticker.C:
+			getConnections()
+		case <-sigChan:
+			fmt.Printf("%s\n", printer.PrintGreen()("Exiting raTTrap... Goodbye!"))
+			return
+		}
+	}
+}
+
+func getConnections() {
+	clearScreen()
+
 	cyan := printer.PrintCyan()
 
 	numColumnWidth := 4
 	ipColumnWidth := 44
 	statusWidth := 15
 
-	fmt.Printf("%s\n", green("Scanning for all public network connections"))
+	fmt.Printf("%s\n", printer.PrintGreen()("Scanning for all public network connections"))
 	fmt.Println("------------------------------------------------")
 
 	connections, err := pnet.Connections("all")
 	if err != nil {
-		fmt.Printf("%s\n", red("[!] Unable to fetch connections"))
+		fmt.Printf("%s\n", printer.PrintRed()("[!] Unable to fetch connections"))
 	}
 
 	for i, conn := range connections {
@@ -55,7 +81,17 @@ func ScanConnections() {
 
 	}
 
-	fmt.Printf("%s\n", green("Scan complete"))
+	// fmt.Printf("%s\n", green("Scan complete"))
+}
+
+func clearScreen() {
+	if runtime.GOOS == "windows" {
+		// A simple way for modern Windows terminals.
+		fmt.Print("\033[H\033[2J")
+	} else {
+		// Standard for Unix-like systems.
+		fmt.Print("\033[2J\033[H")
+	}
 }
 
 func getProcessName(pid int32) string {
