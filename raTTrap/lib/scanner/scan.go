@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net"
 	"rattrap/lib/printer"
+	"strconv"
+	"strings"
 
 	"github.com/shirou/gopsutil/process"
 	pnet "github.com/shirou/gopsutil/v3/net"
@@ -13,6 +15,10 @@ func ScanConnections() {
 	green := printer.PrintGreen()
 	red := printer.PrintRed()
 	cyan := printer.PrintCyan()
+
+	numColumnWidth := 4
+	ipColumnWidth := 44
+	statusWidth := 15
 
 	fmt.Printf("%s\n", green("Scanning for all public network connections"))
 	fmt.Println("------------------------------------------------")
@@ -38,9 +44,15 @@ func ScanConnections() {
 		status := conn.Status
 		conn_details := fmt.Sprintf("%s:%d -> %s:%d", conn.Laddr.IP, conn.Laddr.Port, conn.Raddr.IP, conn.Raddr.Port)
 
-		fmt.Printf("#%d: %s\t%s\t%s\n", i, cyan(conn_details), cyan(status), cyan(process))
+		numPadding := strings.Repeat(" ", numColumnWidth-len(strconv.Itoa(i)))
+		ipPadding := strings.Repeat(" ", ipColumnWidth-len(conn_details))
+		statusPadding := strings.Repeat(" ", statusWidth-len(status))
 
-		// fmt.Println("----------------------------------------")
+		fmt.Printf("#%d:%s %s%s\t%s%s\t%s\n", i, numPadding,
+			cyan(conn_details), ipPadding,
+			cyan(status), statusPadding,
+			cyan(process))
+
 	}
 
 	fmt.Printf("%s\n", green("Scan complete"))
