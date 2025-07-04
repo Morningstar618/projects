@@ -81,7 +81,6 @@ func getConnections() {
 
 	}
 
-	// fmt.Printf("%s\n", green("Scan complete"))
 }
 
 func clearScreen() {
