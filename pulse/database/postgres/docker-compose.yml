@@ -1,0 +1,17 @@
+# docker-compose.yml
+services:
+  db:
+    image: postgres:16
+    container_name: pulse-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: pulse
+      POSTGRES_USER: pulseuser
+      POSTGRES_PASSWORD: supersecret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:

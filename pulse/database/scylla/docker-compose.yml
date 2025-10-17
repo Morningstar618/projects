@@ -1,0 +1,53 @@
+services:
+  some-scylla:
+    image: scylladb/scylla
+    container_name: some-scylla
+    hostname: some-scylla
+    command: --listen-address some-scylla --broadcast-rpc-address some-scylla
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool status"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "9042:9042"
+    # volumes:
+    #   - scylla1:/var/lib/scylla/data
+
+  some-scylla2:
+    image: scylladb/scylla
+    container_name: some-scylla2
+    hostname: some-scylla2
+    command: --seeds some-scylla --listen-address some-scylla2 --broadcast-rpc-address some-scylla2
+    depends_on:
+      some-scylla:
+        condition: service_healthy
+    ports:
+      - "9043:9042"
+    # volumes:
+    #   - scylla2:/var/lib/scylla/data
+
+  scylla-init:
+    image: scylladb/scylla
+    container_name: scylla-init
+    restart: "no"
+    depends_on:
+      some-scylla:
+        condition: service_healthy
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        echo 'Waiting for ScyllaDB to become available...';
+        until cqlsh some-scylla -e 'DESC KEYSPACES'; do sleep 2; done;
+        echo 'Scylla is ready. Creating keyspace...';
+        cqlsh some-scylla -e "
+          CREATE KEYSPACE IF NOT EXISTS migrate_keyspace
+          WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+        ";
+        echo 'Init complete.';
+        exit 0;
+
+# volumes:
+#   scylla1:
+#   scylla2:

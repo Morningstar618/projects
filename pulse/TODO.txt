@@ -1,0 +1,20 @@
+### MAIN ###
+- Add voice call feature
+- Create new service(python flask?) that queries the health-check endpoint on dashboard and scribe and then represent it via a dashboard.
+
+
+### OTHERS ###
+- ADD sender_id and recipient_id as primary key in the messages table for chatMessages function
+- Add a discovery service that register other services and the number of its instances.
+   - Add a feature where discovery service sends queries an endpoint on the other service and then waits for its response. This
+   is for healthchecks.
+   - Create a dashboard for the above.
+- Add pagination while loading messages such that older messages are retrieved as we scroll up in the chat area
+   instead of loading them all at once.
+- Add named volumes for scylla data persistence. Currently adding them is resulting in issues while recreating scylladb
+   containers using docker-compose.
+- Use client side storage to persist chat messages -> IndexedDB? Try it first, if not working, fetch from scylla and replace indexdb content.
+- Add Vector database for a microservice that verifies a human picture.
+- When new user logs in, they should see the previous online users.
+- Refine the chats frontend (/chats endpoint)
+- Add elasticsearch through which we are able to search our messages.

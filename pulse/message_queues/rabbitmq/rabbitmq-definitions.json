@@ -1,0 +1,32 @@
+{
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "users": [
+    {
+      "name": "chatadmin",
+      "password": "chatpass",
+      "tags": "administrator"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "chatadmin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "queues": [
+    {
+      "name": "chat_messages",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ]
+}

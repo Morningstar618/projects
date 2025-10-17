@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulse Chat</title>
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1>Pulse Chat</h1>
+      <button id="chats-btn" class="chats-btn">Chats</button>
+    </div>
+    <div class="header-buttons">
+      <button class="profile-btn">Profile</button>
+      <button class="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="chat-wrapper">
+      <div class="sidebar">
+        <h3>Online Users</h3>
+        <ul id="user-list">
+          <li>Something went wrong...</li>
+        </ul>
+      </div>
+
+      <div class="chat-area">
+        <div class="chat-messages" id="chat-box">
+          <div class="message">
+            <div class="message-bubble">
+              <div class="message-sender">Ayush</div>
+              <p class="message-text">Hey, welcome to Pulse!</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="chat-input">
+          <input type="text" id="message-input" placeholder="Type your message..." />
+          <button>Send</button>
+        </div> -->
+        <div class="chat-input">
+          <input type="text" id="message-input" placeholder="Type your message..." />
+          <button id="call-btn">📞 Call</button>
+          <button id="send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/home.js"></script>
+</body>
+</html>
